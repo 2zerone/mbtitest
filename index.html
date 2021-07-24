@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>색 테스트</title>
+    <meta
+      name="description"
+      content="나를 색으로 표현하면 어떤 색이 나오는 지 MBTI를 기반으로 추천해주는 테스트입니다."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="색 테스트" />
+    <meta
+      property="og:description"
+      content="나를 색으로 표현하면 어떠한 색일지 MBTI를 기반으로 추천해주는 테스트입니다."
+    />
+    <meta
+      property="og:image"
+      content="https://2zeronembti.netlify.app/black.jpg"
+    />
+    <meta property="og:url" content="https://2zeronembti.netlify.app" />
+    <!-- 부트스트랩 css 코드-->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+      crossorigin="anonymous"
+    />
+    <!-- 부트스트랩 css 다음에 본인 css 넣어야 덮어쓰기 가능 -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body class="container">
+    <!-- 메인 화면 -->
+    <article class="start">
+      <h1 class="mt-5 text-center">나를 색으로 표현한다면?</h1>
+      <button type="button" class="button mt-5" onclick="start();">
+        테스트 시작하기
+      </button>
+    </article>
+
+    <!-- 진행 바(progress bar) & 진행 화면 -->
+    <article class="question">
+      <div class="progress mt-5">
+        <div
+          class="progress-bar"
+          role="progressbar"
+          style="width: calc(100 / 12 * 1%)"
+        ></div>
+      </div>
+      <h2 id="title" class="text-center mt-5">문제</h2>
+      <input id="type" type="hidden" value="EI" />
+      <button id="A" type="button" class="button mt-5">Primary</button>
+      <button id="B" type="button" class="button mt-5">Primary</button>
+    </article>
+
+    <!-- 결과 화면-->
+    <article class="result">
+      <img id="img" class="rounded-circle mt-5" src="black.jpg" alt="color" />
+      <h2 id="color" class="text-center mt-5">color</h2>
+      <h3 id="explain" class="text-center mt-5">explain</h3>
+
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="share addthis_inline_share_toolbox mt-5"></div>
+    </article>
+
+    <!-- 광고 추가-->
+    <article class="kakao_ad mt-5">
+      <ins
+        class="kakao_ad_area"
+        style="display: none"
+        data-ad-unit="DAN-qnJSFYXh4Fe3QZdQ"
+        data-ad-width="320"
+        data-ad-height="100"
+      ></ins>
+    </article>
+    <a
+      class="banner mt-5"
+      href="https://www.codelion.net/catalog/Q291cnNlTm9kZTpqbW9r?utm_source=animal_test&utm_medium=web_lecture&utm_campaign=dudgks3316"
+    >
+      <img class="banner-img" src="banner.png" alt="banner" />
+    </a>
+
+    <script
+      type="text/javascript"
+      src="//t1.daumcdn.net/kas/static/ba.min.js"
+      async
+    ></script>
+
+    <!-- 점수 초깃값(내부적 정보 저장)-->
+    <input type="hidden" id="EI" value="0" />
+    <input type="hidden" id="SN" value="0" />
+    <input type="hidden" id="TF" value="0" />
+    <input type="hidden" id="JP" value="0" />
+
+    <!-- 부트스트랩 JS 코드 -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- 문제 -->
+    <script>
+      var num = 1;
+      var q = {
+        1: {
+          title:
+            "월요일부터 금요일까지 열심히 일을 하고 난 후<br> 주말에 나는 무엇을 할 것인가?",
+          type: "EI",
+          A: "친구들을 만나 예쁜 카페와 맛집을 찾아다니며 힐링",
+          B: "집에서 넷플릭스와 스마트폰 등을 활용한 힐링",
+        },
+        2: {
+          title: "애인과의 갈등이 생겼다면<br>해결방안을 어떻게 모색할 것인가?",
+          type: "EI",
+          A: "가장 가까운 친구들에게 상황을 설명하고 여러 의견을 들어보기",
+          B: "나의 연애는 내가 해결하는 것이므로 스스로 계속 생각해보기",
+        },
+        3: {
+          title: "굉장히 사고 싶은 물건이 생겼다.<br>어떻게 할 것인가?",
+          type: "EI",
+          A: "어짜피 사게 될 건데 바로 사자",
+          B: "나에게 진짜 필요한 것인지 일단 생각해보자",
+        },
+        4: {
+          title:
+            "친구가 다니고 있던 직장을 그만두고<br>새로운 꿈이 생겼다고 한다.<br>어떤 조언을 해줄 것인가?",
+          type: "SN",
+          A: "응원하지만 이 취업난에 그렇게 월급을 제 때 잘 주는 직장이<br>어디 있냐며 충고",
+          B: "해야 하는 일보다는 하고 싶은 일이 중요하다며<br>꿈을 택하라고 충고",
+        },
+        5: {
+          title:
+            "여행을 가고 싶은데 코로나19 감염자는 늘어나는 추세이다. 어떻게 대처할 것인가?",
+          type: "SN",
+          A: "이래서는 코로나19는 금방 안 끝날 거니까<br>여행 대신 다른 것을 찾아보자",
+          B: "그래도 언제 코로나19가 끝날 지 모르잖아?<br>끝나면 가게 될 여행지를 찾아보자",
+        },
+        6: {
+          title:
+            "자유로운 주제로 그림을 그리는 시간이<br>주어졌다. 무엇을 주제로 그릴 것인가?",
+          type: "SN",
+          A: "눈 앞에 보이는 풍경이 예쁘니까 보면서 그려보자",
+          B: "평소에 상상해 오던 풍경이 있으니 표현해보자",
+        },
+        7: {
+          title:
+            "친구가 애인과의 속상한 고민이 있다며 나에게 털어놓았는데<br>친구의 잘못이 더 큰 것 같다.<br>친구에게 취할 행동은?",
+          type: "TF",
+          A: "친구가 잘못한 것 아니냐며 먼저 사과하라는 말을 건넨다",
+          B: "친구가 속상해하는 것이 우선이니 계속해서 공감해준다",
+        },
+        8: {
+          title:
+            "친구가 요새 꽂힌 노래가 있다며<br> 나에게 추천해주었다.<br>하지만, 나의 취향에 맞지 않다면? ",
+          type: "TF",
+          A: "내 스타일은 아닌 것 같다며 취향이 아님을 말한다",
+          B: "노래를 일단 끝까지 듣고 좋다고 말한 뒤 다시는 듣지 않는다",
+        },
+        9: {
+          title: "나는 평소에 이런 이야기를 많이 듣는다.",
+          type: "TF",
+          A: "냉정하고 공감능력이 떨어진다",
+          B: "이야기하기 편하고 공감을 잘해준다",
+        },
+        10: {
+          title: "친구들과 여행을 왔는데 예산이 한정적이라면?",
+          type: "JP",
+          A: "필요한 지출에 무엇이 있는지 대략적인 예산을 정해보는 편이다",
+          B: "즐겁게 여행 온거니까 아무 생각 말고 일단 쓰고 보자는 편이다",
+        },
+        11: {
+          title: "과제 7개를 일주일 안에 해결해야 한다면?",
+          type: "JP",
+          A: "어떤 과제를 언제 처리할 지 계획을 세워본다",
+          B: "그때그때 끌리는 과제부터 처리한다",
+        },
+        12: {
+          title: "지금은 월요일, 친구가 주말에 만나자고 한다면?",
+          type: "JP",
+          A: "장소와 시간을 미리 정해서 친구에게 말해준다",
+          B: "주말 당일이 되어서야 장소와 시간을 정한다",
+        },
+      };
+
+      // mapping을 위한 객체에 결과 저장
+      var result = {
+        ISTJ: {
+          color: "검정색",
+          explain: "약속이 가장 중요한 ISTJ",
+          img: "black.jpg",
+        },
+        ISFJ: {
+          color: "투명색",
+          explain: "남 챙기는 것을 좋아하는 ISFJ",
+          img: "transparent.jpg",
+        },
+        INFJ: {
+          color: "금색",
+          explain: "감수성이 풍부한 INFJ",
+          img: "gold.jpg",
+        },
+        INTJ: {
+          color: "파란색",
+          explain: "혼자 있는 걸 좋아하는 INTJ",
+          img: "blue.jpg",
+        },
+        ISTP: {
+          color: "회색",
+          explain: "만사가 귀찮은 ISTP",
+          img: "gray.jpg",
+        },
+        ISFP: {
+          color: "갈색",
+          explain: "배려형 개인주의 ISFP",
+          img: "brown.jpg",
+        },
+        INFP: {
+          color: "노란색",
+          explain: "게으른 완벽주의자 INFP",
+          img: "yellow.jpg",
+        },
+        INTP: {
+          color: "주황색",
+          explain: "무뚝뚝하고 진지한 INTP",
+          img: "orange.jpg",
+        },
+        ESTP: {
+          color: "은색",
+          explain: "외로움을 많이 타는 ESTP",
+          img: "silver.jpg",
+        },
+        ESFP: {
+          color: "하얀색",
+          explain: "성격이 급한 ESFP",
+          img: "white.jpg",
+        },
+        ENFP: {
+          color: "하늘색",
+          explain: "생각이 많은 ENFP",
+          img: "skyblue.jpg",
+        },
+        ENTP: {
+          color: "빨간색",
+          explain: "마이웨이 ENTP",
+          img: "red.jpg",
+        },
+        ESTJ: {
+          color: "보라색",
+          explain: "호불호가 확실한 ESTJ",
+          img: "purple.jpg",
+        },
+        ESFJ: {
+          color: "초록색",
+          explain: "고민을 잘 들어주는 ESFJ",
+          img: "green.jpg",
+        },
+        ENFJ: {
+          color: "연두색",
+          explain: "인싸가 되고 싶은 ENFJ",
+          img: "lightgreen.jpg",
+        },
+        ENTJ: {
+          color: "남색",
+          explain: "자기애가 강한 ENTJ",
+          img: "indigo.jpg",
+        },
+      };
+
+      // 시작 버튼 click event
+      function start() {
+        $(".start").hide();
+        $(".question").show();
+        next();
+      }
+
+      // A버튼 B버튼 click event
+      $("#A").click(function () {
+        var type = $("#type").val();
+        var preValue = $("#" + type).val();
+        $("#" + type).val(parseInt(preValue) + 1);
+        next();
+      });
+      $("#B").click(function () {
+        next();
+      });
+
+      // next click event
+      function next() {
+        // 마지막 문제일 때
+        if (num == 13) {
+          $(".question").hide();
+          $(".result").show();
+
+          // mbti를 판단하는 logic
+          var mbti = "";
+          $("#EI").val() < 2 ? (mbti += "I") : (mbti += "E");
+          $("#SN").val() < 2 ? (mbti += "N") : (mbti += "S");
+          $("#TF").val() < 2 ? (mbti += "F") : (mbti += "T");
+          $("#JP").val() < 2 ? (mbti += "P") : (mbti += "J");
+
+          // mbti mapping
+          $("#img").attr("src", result[mbti]["img"]);
+          $("#color").html(result[mbti]["color"]);
+          $("#explain").html(result[mbti]["explain"]);
+        } else {
+          // 마지막 문제가 아닐 때
+          $(".progress-bar").attr("style", "width: calc(100/12*" + num + "%)");
+          $("#title").html(q[num]["title"]);
+          $("#type").val(q[num]["type"]);
+          $("#A").html(q[num]["A"]);
+          $("#B").html(q[num]["B"]);
+          num++;
+        }
+      }
+    </script>
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script
+      type="text/javascript"
+      src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-60f7dce750df2cc6"
+    ></script>
+  </body>
+</html>
